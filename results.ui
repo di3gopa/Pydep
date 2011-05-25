@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Results</class>
+ <widget class="QWidget" name="Results">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>920</width>
+    <height>555</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Respuestas - pyDep</string>
+  </property>
+  <widget class="QTreeWidget" name="treeWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>891</width>
+     <height>491</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>Llave</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Columnas</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>17</y>
+     <width>711</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Recomendacion de Tablas para las dependencias Resueltas:</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

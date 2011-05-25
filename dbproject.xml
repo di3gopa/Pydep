@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<dependencies>
+	<dependency>
+		<fdi>id</fdi>
+		<fdj>name,user,password</fdj>
+	</dependency>
+	<dependency>
+		<fdi>asset_id</fdi>
+		<fdj>title,quantity_availible,addedDate,id,category</fdj>
+	</dependency>
+	<dependency>
+		<fdi>author_id</fdi>
+		<fdj>author</fdj>
+	</dependency>
+	<dependency>
+		<fdi>asset_id,author_id</fdi>
+		<fdj>asset_id,author_id</fdj>
+	</dependency>
+		<dependency>
+		<fdi>asset_id</fdi>
+		<fdj>publisher,isbn</fdj>
+	</dependency>
+	<dependency>
+		<fdi>asset_id</fdi>
+		<fdj>publisherNo</fdj>
+	</dependency>		
+	<dependency>
+		<fdi>asset_id</fdi>
+		<fdj>publicationNo</fdj>
+	</dependency>		
+</dependencies>
+

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<dependencies>
+	<dependency>
+		<fdi>a,b</fdi>
+		<fdj>x,y</fdj>
+	</dependency>
+	<dependency>
+		<fdi>c,x,t</fdi>
+		<fdj>m</fdj>
+	</dependency>
+	<dependency>
+		<fdi>m</fdi>
+		<fdj>a</fdj>
+	</dependency>
+	<dependency>
+		<fdi>x</fdi>
+		<fdj>t,b</fdj>
+	</dependency>
+</dependencies>
+

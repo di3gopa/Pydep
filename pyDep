@@ -1,0 +1,100 @@
+#!/usr/bin/env python
+"""
+  <pyDep.py este script el archivo principal del programa donde se intancia el gui y se manda a ejecutar el algoritmo de bernsteins>
+    Copyleft (C) 2009  Diego Tejera
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+"""
+
+import sys
+from PyQt4 import QtCore, QtGui
+from edytor import Ui_Form
+from resolveDeps import *
+from startResults import *
+
+class StartQT4(QtGui.QMainWindow):
+	def __init__(self, parent=None):
+		QtGui.QWidget.__init__(self, parent)
+		self.ui = Ui_Form()
+		self.ui.setupUi(self)
+		self.results = None
+		QtCore.QObject.connect(self.ui.openButton,QtCore.SIGNAL("clicked()"), self.file_dialog)
+		QtCore.QObject.connect(self.ui.pushButton_resolve,QtCore.SIGNAL("clicked()"), self.resolveDependencies)
+		QtCore.QObject.connect(self.ui.pushButton_save,QtCore.SIGNAL("clicked()"), self.save_file)
+		QtCore.QObject.connect(self.ui.editor_window,QtCore.SIGNAL("textChanged()"), self.enable_save)
+	def file_dialog(self):
+		response = "false"
+		SAVE = 'Guardar'
+		DISCARD = 'Descartar'
+		CANCEL = 'Cancelar'
+		
+		if self.ui.pushButton_save.isEnabled() and self.filename:
+			message = QtGui.QMessageBox(self)
+			message.setText('Deseas Guardar los Cambios ?')
+			message.setWindowTitle('Editor PyDep')
+			message.setIcon(QtGui.QMessageBox.Question)
+			message.addButton(SAVE, QtGui.QMessageBox.AcceptRole)
+			message.addButton(DISCARD, QtGui.QMessageBox.DestructiveRole)
+			message.addButton(CANCEL, QtGui.QMessageBox.RejectRole)
+			message.setDetailedText('Los cambios no Guardos se guardaran en: ' + str(self.filename))
+			message.exec_()
+			response = message.clickedButton().text()
+			if response == SAVE:
+				self.save_file()
+				self.ui.pushButton_save.setEnabled(False)
+			elif response == DISCARD:
+				self.ui.pushButton_save.setEnabled(False)
+
+		if response != CANCEL:
+			fd = QtGui.QFileDialog(self)
+			self.filename = fd.getOpenFileName()
+			from os.path import isfile
+			if isfile(self.filename):
+				self.ui.label_opened.setText(self.filename)
+				self.ui.editor_window.setText(open(self.filename).read())
+				self.ui.pushButton_save.setEnabled(False)
+				
+	def enable_save(self):
+		self.ui.pushButton_save.setEnabled(True)
+	def save_file(self):
+		from os.path import isfile
+		if isfile(self.filename):
+			import codecs
+			s = codecs.open(self.filename,'w','utf-8')
+			s.write(unicode(self.ui.editor_window.toPlainText()))
+			s.close()
+			self.ui.pushButton_save.setEnabled(False)
+
+	def resolveDependencies(self):
+		self.obj = resolveDepenencies(str(self.ui.editor_window.toPlainText()))
+		dependencies = self.obj.giveDependencies()
+		self.results = StartResultWindow()
+		for x in dependencies:
+			self.results.addTable(x["fdi"],x["fdj"])
+		self.results.show()
+
+		
+		"""keys = self.obj.giveKeys()
+		output = "Tablas:\n"+dependencies+"\n\nSuperllave:\n"+keys
+		self.ui.editor_window.setText(output)
+		self.ui.pushButton_save.setEnabled(False)"""
+		
+
+if __name__ == "__main__":
+	app = QtGui.QApplication(sys.argv)
+	myapp = StartQT4()
+	myapp.show()
+	sys.exit(app.exec_())
+
